@@ -30,10 +30,10 @@ const App = () => {
                   <Slider />
 
                   <Routes>
-                    <Route path="/" element={<Home />} />
-                    <Route path="/Category" element={<Category />} />
-                    <Route path="/Cart" element={<Cart />} />
-                    <Route path="*" element={<NotFound />} />
+                    <Route path="/" element={<Home/>} />
+                    <Route path="/Category/:id" element={<Category/>} />
+                    <Route path="/Cart" element={<Cart/>} />
+                    <Route path="*" element={<NotFound/>} />
                   </Routes>
 
                 </div>
