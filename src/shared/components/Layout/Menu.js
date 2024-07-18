@@ -2,17 +2,8 @@ import { useState, useEffect } from "react";
 import { getCategories } from "../../../services/Api";
 import { Link } from "react-router-dom";
 
-const Menu = () => {
-    const [categories, setCategories] = useState([]);
-    useEffect(() => {
-
-        getCategories({
-            params: { limit: 5 }
-                    })
-            .then(({ data }) => setCategories(data.data.docs))
-            .catch((error) => console.log(error))
-    }
-        , [])
+const Menu = ({categories}) => {
+   
 
     return (
         <div className="row">

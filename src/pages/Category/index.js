@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import { getProductsCategory, getCategory,getCategories } from "../../services/Api";
 import { useParams } from "react-router-dom";
 import ProductItem from "../../shared/components/product-item";
@@ -6,13 +6,15 @@ import ProductItem from "../../shared/components/product-item";
 const Category = () => {
     const [products, setProducts] = useState([]);
     const [category, setCategory] = useState([]);
-    const [total, setTotal] = useState([]);
+    const [total, setTotal] = useState(0);
     const {id} = useParams();
+
     useEffect(() => {
 
         // Get Products By Category ID
         getCategory(id, {})
             .then(({ data }) => {
+                // console.log(id)
                  setCategory(data.data)
                  
             })
@@ -27,6 +29,7 @@ const Category = () => {
         getProductsCategory(id, {})
 
             .then(({ data }) => {
+                // console.log(id)
                 setProducts(data.data.docs)
                 setTotal(data.data.pages.total)
             })
@@ -42,7 +45,7 @@ const Category = () => {
                 <h3>{category.name} (hiện có {total} sản phẩm)</h3>
                 <div className="product-list card-deck">
                     {
-                        products.map((product, index) => (
+                        products?.map((product, index) => (
                             <ProductItem item={product} key={index} />
                         ))
                     }
