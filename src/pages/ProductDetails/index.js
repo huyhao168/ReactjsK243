@@ -2,8 +2,13 @@ import React, { useEffect, useState } from "react";
 import { getProduct } from "../../services/Api";
 import { useParams } from "react-router-dom";
 import { getImageProduct } from "../../shared/ultils";
+import { useNavigate } from "react-router-dom";
+import { useDispatch } from "react-redux";
+import { addToCart } from "../../redux-setup/reducers/cart";
+import { useSelector } from "react-redux";
 
 const ProductDetails = () => {
+    const navigate = useNavigate();
     const [productDetail, setProductDetail] = useState([]);
     const { id } = useParams();
     useEffect(() => {
@@ -13,6 +18,28 @@ const ProductDetails = () => {
             })
             .catch((error) => console.log(error))
     }, [])
+
+    //Mua hang
+    const dispatch = useDispatch();
+    const clickAddToCar = (type) => {
+        dispatch(addToCart({
+            _id: id,
+            name: productDetail.name,
+            image: productDetail.image,
+            price: productDetail.price,
+            qty: 1,
+
+        }));
+        console.log(totalCartItems);
+        if (type === "buy-now") return navigate("/Cart");
+    }
+    //Lay tong so trong gio hang, tham so useSelecttor la store, dung Destructuring gia tri cua store la cart
+    const totalCartItems = useSelector(({ cart }) =>
+        cart.items.reduce((total, item) => {
+            if (item?._id === id) total += item.qty;
+            return total; // Trả về giá trị tổng mới
+        }, 0)
+    );
 
     return (
         <>
@@ -38,15 +65,21 @@ const ProductDetails = () => {
 
                             </ul>
                             {/* <div id="add-cart"><a href="#">Mua ngay</a></div> */}
+
                             <div id="add-cart">
-                                <button className="btn btn-warning mr-2">
+                                <button onClick={() => clickAddToCar("buy-now")} className="btn btn-warning mr-2">
                                     Mua ngay
                                 </button>
 
-                                <button className="btn btn-info">
+                                <button className="btn btn-info" onClick={clickAddToCar}>
                                     Thêm vào giỏ hàng
                                 </button>
+                                <p className="btn btn-info" >
+                                    {totalCartItems}
+                                </p>
                             </div>
+
+
 
                         </div>
                     </div>
