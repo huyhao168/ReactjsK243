@@ -12,6 +12,7 @@ import Category from "./pages/Category";
 import NotFound from "./pages/NotFound";
 import { getCategories } from "./services/Api";
 import ProductDetails from "./pages/ProductDetails";
+import Search from "./pages/Search";
 
 const App = () => {
 
@@ -53,6 +54,7 @@ const App = () => {
                     <Route path="/Category/:id" element={<Category />} />
                     <Route path="/ProductDetails/:id" element={<ProductDetails/>}/>
                     <Route path="/Cart" element={<Cart/>} />
+                    <Route path="/Search" element={<Search/>} />
                     <Route path="*" element={<NotFound/>} />
                   </Routes>
 

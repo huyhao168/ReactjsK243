@@ -1,6 +1,19 @@
-import { Link } from "react-router-dom";
+import { Link,useNavigate } from "react-router-dom";
+import { useState, useEffect } from "react";
 
 const Header = () => {
+    const [keyword, setKeyword] = useState("");
+
+    const changeKeyword=(e)=>
+        {
+            setKeyword(e.target.value);
+        }
+
+    const navigate=useNavigate();
+    const clickSearch=()=>{
+        navigate(`/Search?keyword=${keyword}`);
+    }
+
     return (
         <div id="header">
             <div className="container">
@@ -10,8 +23,9 @@ const Header = () => {
                     </div>
                     <div id="search" className="col-lg-4 col-md-12 col-sm-12">
                         <form className="form-inline">
-                            <input className="form-control mt-3" type="search" placeholder="Tìm kiếm" aria-label="Search" />
-                            <button className="btn btn-danger mt-3" type="submit">Tìm kiếm</button>
+                            <input className="form-control mt-3" type="search" onChange={changeKeyword}
+                                placeholder="Tìm kiếm" aria-label="Search" />
+                            <button className="btn btn-danger mt-3" type="button" onClick={clickSearch}>Tìm kiếm</button>
                         </form>
                     </div>
                     <div id="cart" className="col-lg-5 col-md-12 col-sm-12">

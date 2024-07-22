@@ -37,13 +37,23 @@ const ProductDetails = () => {
                                 }
 
                             </ul>
-                            <div id="add-cart"><a href="#">Mua ngay</a></div>
+                            {/* <div id="add-cart"><a href="#">Mua ngay</a></div> */}
+                            <div id="add-cart">
+                                <button className="btn btn-warning mr-2">
+                                    Mua ngay
+                                </button>
+
+                                <button className="btn btn-info">
+                                    Thêm vào giỏ hàng
+                                </button>
+                            </div>
+
                         </div>
                     </div>
                     <div id="product-body" className="row">
                         <div className="col-lg-12 col-md-12 col-sm-12">
                             <h3>Đánh giá về iPhone X 64GB</h3>
-                           {productDetail?.details}
+                            {productDetail?.details}
                         </div>
                     </div>
                     {/*	Comment	*/}
