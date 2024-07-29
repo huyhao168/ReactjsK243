@@ -14,7 +14,8 @@ import { getCategories } from "./services/Api";
 import ProductDetails from "./pages/ProductDetails";
 import Search from "./pages/Search";
 import { Provider } from "react-redux";
-import { store } from "./redux-setup/store";
+import { store, persistor } from "./redux-setup/store";
+import { PersistGate } from "redux-persist/integration/react";
 
 const App = () => {
 
@@ -37,46 +38,47 @@ const App = () => {
 
   return (
     <>
-      <Provider store={store}> 
-        <Router>
-          <div>
-            {/*	Header	*/}
-            <Header />
-            {/*	End Header	*/}
-            {/*	Body	*/}
-            <div id="body">
-              <div className="container">
-                <Menu categories={categories} />
-                <div className="row">
-                  <div id="main" className="col-lg-8 col-md-12 col-sm-12">
-                    {/*	Slider	*/}
-                    <Slider />
+      <Provider store={store}>
+        <PersistGate persistor={persistor}>
+          <Router>
+            <div>
+              {/*	Header	*/}
+              <Header />
+              {/*	End Header	*/}
+              {/*	Body	*/}
+              <div id="body">
+                <div className="container">
+                  <Menu categories={categories} />
+                  <div className="row">
+                    <div id="main" className="col-lg-8 col-md-12 col-sm-12">
+                      {/*	Slider	*/}
+                      <Slider />
 
-                    <Routes>
-                      <Route path="/" element={<Home />} />
-                      <Route path="/Category/:id" element={<Category />} />
-                      <Route path="/ProductDetails/:id" element={<ProductDetails />} />
-                      <Route path="/Cart" element={<Cart />} />
-                      <Route path="/Search" element={<Search />} />
-                      <Route path="*" element={<NotFound />} />
-                    </Routes>
+                      <Routes>
+                        <Route path="/" element={<Home />} />
+                        <Route path="/Category/:id" element={<Category />} />
+                        <Route path="/ProductDetails/:id" element={<ProductDetails />} />
+                        <Route path="/Cart" element={<Cart />} />
+                        <Route path="/Search" element={<Search />} />
+                        <Route path="*" element={<NotFound />} />
+                      </Routes>
 
+                    </div>
+
+                    <Sidebar />
                   </div>
-
-                  <Sidebar />
                 </div>
               </div>
+              {/*	End Body	*/}
+
+              {/*	Footer	*/}
+              <Footer />
+              {/*	End Footer	*/}
             </div>
-            {/*	End Body	*/}
-
-            {/*	Footer	*/}
-            <Footer />
-            {/*	End Footer	*/}
-          </div>
-        </Router>
+          </Router>
 
 
-
+        </PersistGate>
       </Provider>
 
     </>
