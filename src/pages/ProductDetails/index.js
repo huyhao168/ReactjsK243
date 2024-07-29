@@ -34,11 +34,12 @@ const ProductDetails = () => {
         if (type === "buy-now") return navigate("/Cart");
     }
     //Lay tong so trong gio hang, tham so useSelecttor la store, dung Destructuring gia tri cua store la cart
-    const totalCartItems = useSelector(({ cart }) =>
-        cart.items.reduce((total, item) => {
+    const totalCartItems = useSelector((state) =>
+        state.items.reduce((total, item) => {
             if (item?._id === id) total += item.qty;
             return total; // Trả về giá trị tổng mới
         }, 0)
+        // console.log(state.items)
     );
 
     return (

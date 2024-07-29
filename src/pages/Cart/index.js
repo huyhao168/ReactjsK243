@@ -8,9 +8,9 @@ import { useState } from "react";
 import { order } from "../../services/Api";
 
 const Cart = () => {
-    const itemsCart = useSelector(({ cart }) => cart.items);
-    const totalPrice = useSelector(({ cart }) =>
-        cart.items.reduce((total, item) => {
+    const itemsCart = useSelector((state) => state.items);
+    const totalPrice = useSelector((state) =>
+        state.items.reduce((total, item) => {
             total += item?.qty * item?.price;
             return total; // Trả về giá trị tổng mới
         }, 0)
@@ -39,29 +39,38 @@ const Cart = () => {
         }
 
     }
+
+    // Xóa thông tin đặt hàng
+    const cancelCart = (id) => {
+        // const isConfirmed = confirm("Bạn có muốn xóa sản phẩm khỏi giỏ hàng không?");
+        // if (isConfirmed) {
+            dispatch(deleteItemCart({ _id: id }));
+        // }
+    };
+
     // Đặt hàng
 
-//     const data = {
-//         fullName: "Vietpro",
-// phone: "0123456789",
-// email: "vietpro.edu.vn@gmail.com",
-// address: "Hà Nội",
-// items: [
-//  {prd_id: "321h213kjh321gjh23", price: 15000000, qty: 2},
-//  item,
-//  item,
-//  ...
-// ],
-// }
+    //     const data = {
+    //         fullName: "Vietpro",
+    // phone: "0123456789",
+    // email: "vietpro.edu.vn@gmail.com",
+    // address: "Hà Nội",
+    // items: [
+    //  {prd_id: "321h213kjh321gjh23", price: 15000000, qty: 2},
+    //  item,
+    //  item,
+    //  ...
+    // ],
+    // }
 
 
     const [inputsOrder, setInputsOrder] = useState({});
-    const changeInputOrder = (e)=>{
-        const {name, value} = e.target;
-        return setInputsOrder({...inputsOrder, [name]: value});
+    const changeInputOrder = (e) => {
+        const { name, value } = e.target;
+        return setInputsOrder({ ...inputsOrder, [name]: value });
     }
-    
-    const clickOrder=(e)=>{
+
+    const clickOrder = (e) => {
         e.preventDefault();
         // const newItems = items.map((item) => ({
         //             prd_id: item._id,
@@ -99,7 +108,7 @@ const Cart = () => {
                                 </div>
                                 <div className="cart-price col-lg-3 col-md-3 col-sm-12">
                                     <b>{item?.qty * item?.price}</b>
-                                    <a href="#">Xóa</a></div>
+                                    <a href="#" onClick={(e) => cancelCart(e, item._id)}>Xóa</a></div>
                             </div>
 
                         )
@@ -119,19 +128,19 @@ const Cart = () => {
                     <form method="post">
                         <div className="row">
                             <div id="customer-name" className="col-lg-4 col-md-4 col-sm-12">
-                                <input placeholder="Họ và tên (bắt buộc)" type="text" name="name" onChange={ changeInputOrder } value={inputsOrder?.name}
+                                <input placeholder="Họ và tên (bắt buộc)" type="text" name="name" onChange={changeInputOrder} value={inputsOrder?.name}
                                     className="form-control" required />
                             </div>
                             <div id="customer-phone" className="col-lg-4 col-md-4 col-sm-12">
-                                <input placeholder="Số điện thoại (bắt buộc)" type="text" name="phone" onChange={ changeInputOrder } value={inputsOrder?.phone}
+                                <input placeholder="Số điện thoại (bắt buộc)" type="text" name="phone" onChange={changeInputOrder} value={inputsOrder?.phone}
                                     className="form-control" required />
                             </div>
                             <div id="customer-mail" className="col-lg-4 col-md-4 col-sm-12">
-                                <input placeholder="Email (bắt buộc)" type="text" name="mail" onChange={ changeInputOrder } value={inputsOrder?.mail}
+                                <input placeholder="Email (bắt buộc)" type="text" name="mail" onChange={changeInputOrder} value={inputsOrder?.mail}
                                     className="form-control" required />
                             </div>
                             <div id="customer-add" className="col-lg-12 col-md-12 col-sm-12">
-                                <input placeholder="Địa chỉ nhà riêng hoặc cơ quan (bắt buộc)" type="text" onChange={ changeInputOrder } value={inputsOrder?.add}
+                                <input placeholder="Địa chỉ nhà riêng hoặc cơ quan (bắt buộc)" type="text" onChange={changeInputOrder} value={inputsOrder?.add}
                                     name="add" className="form-control" required />
                             </div>
                         </div>
