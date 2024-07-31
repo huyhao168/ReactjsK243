@@ -6,8 +6,11 @@ import { updateItemCart, deleteItemCart } from "../../redux-setup/reducers/cart"
 import { useDispatch } from "react-redux";
 import { useState } from "react";
 import { order } from "../../services/Api";
+import { useNavigate } from "react-router-dom";
 
 const Cart = () => {
+    const navigate=useNavigate();
+
     const itemsCart = useSelector((state) => state.items);
     const totalPrice = useSelector((state) =>
         state.items.reduce((total, item) => {
@@ -50,19 +53,6 @@ const Cart = () => {
 
     // Đặt hàng
 
-    //     const data = {
-    //         fullName: "Vietpro",
-    // phone: "0123456789",
-    // email: "vietpro.edu.vn@gmail.com",
-    // address: "Hà Nội",
-    // items: [
-    //  {prd_id: "321h213kjh321gjh23", price: 15000000, qty: 2},
-    //  item,
-    //  item,
-    //  ...
-    // ],
-    // }
-
 
     const [inputsOrder, setInputsOrder] = useState({});
     const changeInputOrder = (e) => {
@@ -72,11 +62,23 @@ const Cart = () => {
 
     const clickOrder = (e) => {
         e.preventDefault();
-        // const newItems = items.map((item) => ({
-        //             prd_id: item._id,
-        //             price: item.price,
-        //             qty: item.qty,
-        //         }));
+        //Chuẩn bị danh sách đặt hàng theo cấu trúc API yêu cầu
+        const newItems = itemsCart.map((item) => ({
+                    prd_id: item._id,
+                    price: item.price,
+                    qty: item.qty,
+                }));
+        
+        // Goi API gui thong tin order
+        order({...inputsOrder,//thông tin người đặt
+            items:newItems//chi tiết đơn hàng
+        })
+        .then(({data})=>{
+            if(data.status==="success") return navigate("/Success");
+
+        })
+        .catch((error)=>console.log(error));
+      
     }
 
 
@@ -128,7 +130,7 @@ const Cart = () => {
                     <form method="post">
                         <div className="row">
                             <div id="customer-name" className="col-lg-4 col-md-4 col-sm-12">
-                                <input placeholder="Họ và tên (bắt buộc)" type="text" name="name" onChange={changeInputOrder} value={inputsOrder?.name}
+                                <input placeholder="Họ và tên (bắt buộc)" type="text" name="fullName" onChange={changeInputOrder} value={inputsOrder?.name}
                                     className="form-control" required />
                             </div>
                             <div id="customer-phone" className="col-lg-4 col-md-4 col-sm-12">
@@ -136,12 +138,12 @@ const Cart = () => {
                                     className="form-control" required />
                             </div>
                             <div id="customer-mail" className="col-lg-4 col-md-4 col-sm-12">
-                                <input placeholder="Email (bắt buộc)" type="text" name="mail" onChange={changeInputOrder} value={inputsOrder?.mail}
+                                <input placeholder="Email (bắt buộc)" type="text" name="email" onChange={changeInputOrder} value={inputsOrder?.mail}
                                     className="form-control" required />
                             </div>
                             <div id="customer-add" className="col-lg-12 col-md-12 col-sm-12">
                                 <input placeholder="Địa chỉ nhà riêng hoặc cơ quan (bắt buộc)" type="text" onChange={changeInputOrder} value={inputsOrder?.add}
-                                    name="add" className="form-control" required />
+                                    name="address" className="form-control" required />
                             </div>
                         </div>
                     </form>
